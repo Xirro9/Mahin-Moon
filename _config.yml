@@ -3,4 +3,4 @@ Description: This online portfolio shows some projects I have made.
 show_downloads: false
 plugins:
   - jekyll-remote-theme
-remote_theme: jekyll-theme-quartz
+remote_theme: jekyll-theme-hacker
