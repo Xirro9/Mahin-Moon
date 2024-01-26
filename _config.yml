@@ -1,4 +1,4 @@
-remote_theme: pages-themes/hacker@v0.2.0
 title: Mahin Moon
-description: This is an online portfolio to show some project I have made.
+Description: This online portfolio shows some projects I have made.
 show_downloads: false
+theme: jekyll-theme-hacker
