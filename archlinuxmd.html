@@ -1,0 +1,115 @@
+<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="My_Arch_Linux_documentation_0"></a>My Arch Linux documentation</h1>
+<h2 class="code-line" data-line-start=1 data-line-end=2 ><a id="Mahin_Moon_1"></a>Mahin Moon</h2>
+<p class="has-line-data" data-line-start="3" data-line-end="4">after a quick skim of the arch linux wiki I get a jist of what I have to do.</p>
+<p class="has-line-data" data-line-start="5" data-line-end="6">downloading an iso from the first link in the american iso files</p>
+<p class="has-line-data" data-line-start="7" data-line-end="9">okay so after the iso is installed I need to configure the VM so that the iso will run<br>
+I changed the ram size to <strong>2G</strong> and set the hard drive space to <strong>16G</strong>, I also turned on 3D graphics and set the graphics ram to <strong>2G</strong></p>
+<p class="has-line-data" data-line-start="10" data-line-end="11">so after loading in the iso and letting it all run I am introduced to an all black screen with text, this resembles what I know as a terminal but is actually the entire operating system as of now.</p>
+<p class="has-line-data" data-line-start="12" data-line-end="13">Side note:</p>
+<blockquote>
+<p class="has-line-data" data-line-start="13" data-line-end="14">the whole OS being a command terminal is kinda awsome, it feels so raw and cool to mess with</p>
+</blockquote>
+<p class="has-line-data" data-line-start="15" data-line-end="16">so now I have to partition the hard drive myself, I looked over the wiki again but honestly have no idea what I am really doing</p>
+<p class="has-line-data" data-line-start="17" data-line-end="18">I ended up finding a guide on how to partition the disk</p>
+<p class="has-line-data" data-line-start="19" data-line-end="20">side note:</p>
+<blockquote>
+<p class="has-line-data" data-line-start="20" data-line-end="21">I also found out about the ‘archinstall’ command and have used it to have a fully functioning arch linux setup on a seperate vm just to see if it was really that simple. I am not going to use it beacuse there would be no way to document it and im pretty sure it would go against the assigment to use it</p>
+</blockquote>
+<p class="has-line-data" data-line-start="22" data-line-end="23">first thing I did was run</p>
+<pre><code class="has-line-data" data-line-start="24" data-line-end="26">cfdisk /dev/sda
+</code></pre>
+<p class="has-line-data" data-line-start="26" data-line-end="27">and I selected gpt (“l-like ch-ch-CHATGPT?!?!”)</p>
+<p class="has-line-data" data-line-start="28" data-line-end="33">I made a New partition and made it 1 megabyte in size and chose the ‘boot partition option’<br>
+then I made a ‘Linux Swap’ partition 4<strong>G</strong> in size<br>
+the remaining 12<strong>G</strong> I made ‘Linux file system’ so that my VM can use that space<br>
+then I pressed the ‘write’ button, saving my changes<br>
+now to format the partitions</p>
+<p class="has-line-data" data-line-start="34" data-line-end="35">first I ran</p>
+<pre><code class="has-line-data" data-line-start="36" data-line-end="38">mkfs.ext4 /dev/sda3
+</code></pre>
+<p class="has-line-data" data-line-start="39" data-line-end="40">then I partitioned the swap by running</p>
+<pre><code class="has-line-data" data-line-start="41" data-line-end="44">mkswap /dev/sda2
+swapon -a
+</code></pre>
+<p class="has-line-data" data-line-start="45" data-line-end="46">then we mount our disk</p>
+<pre><code class="has-line-data" data-line-start="47" data-line-end="49">mount /dev/sda3 /mnt
+</code></pre>
+<p class="has-line-data" data-line-start="50" data-line-end="51">Now I am going to run pacstrap, installing a few things</p>
+<pre><code class="has-line-data" data-line-start="52" data-line-end="54">pacstrap /mnt base linux linux-firmware nano grub dhcpcd
+</code></pre>
+<p class="has-line-data" data-line-start="54" data-line-end="55">this took a long while but it loaded all of the OS files and some extras</p>
+<p class="has-line-data" data-line-start="56" data-line-end="57">now I am going to run</p>
+<pre><code class="has-line-data" data-line-start="58" data-line-end="62">genfstab /mnt
+genfstab /mnt &gt;&gt; /mnt/etc/fstab
+arch-chroot /mnt
+</code></pre>
+<p class="has-line-data" data-line-start="62" data-line-end="63">honestly not too sure what did there, just following the guide</p>
+<p class="has-line-data" data-line-start="64" data-line-end="65">now we setup the root password by inputting</p>
+<pre><code class="has-line-data" data-line-start="66" data-line-end="68">passwd
+</code></pre>
+<p class="has-line-data" data-line-start="68" data-line-end="69">after typeing and confirming the password, the root user now has a password</p>
+<p class="has-line-data" data-line-start="70" data-line-end="71">and with that we are done with the base installation and ready to reboot by running</p>
+<pre><code class="has-line-data" data-line-start="72" data-line-end="74">reboot
+</code></pre>
+<p class="has-line-data" data-line-start="75" data-line-end="76">Now I have a fully working install of arch-linux</p>
+<p class="has-line-data" data-line-start="77" data-line-end="78">I made my user here and set my password</p>
+<pre><code class="has-line-data" data-line-start="79" data-line-end="82">useradd Mahin
+passwd Mahin
+</code></pre>
+<p class="has-line-data" data-line-start="83" data-line-end="84">then I installed sudo</p>
+<pre><code class="has-line-data" data-line-start="85" data-line-end="87">pacman -S sudo
+</code></pre>
+<p class="has-line-data" data-line-start="88" data-line-end="89">This is still just a large command terminal so its time to install a DE</p>
+<p class="has-line-data" data-line-start="90" data-line-end="91">after a little googleing I decided to install Plasma KDE</p>
+<p class="has-line-data" data-line-start="92" data-line-end="93">first I made sure all packages are up to date:</p>
+<pre><code class="has-line-data" data-line-start="94" data-line-end="96">sudo pacman -Syu
+</code></pre>
+<p class="has-line-data" data-line-start="97" data-line-end="98">now to install xorg</p>
+<pre><code class="has-line-data" data-line-start="99" data-line-end="101">sudo pacman -S xorg
+</code></pre>
+<p class="has-line-data" data-line-start="102" data-line-end="103">after xorg finishes installing I ran</p>
+<pre><code class="has-line-data" data-line-start="104" data-line-end="106">sudo pacman -S plasma-meta kde-applications
+</code></pre>
+<p class="has-line-data" data-line-start="107" data-line-end="108">now to enable a few services</p>
+<pre><code class="has-line-data" data-line-start="109" data-line-end="111">sudo systemctl enable sddm
+</code></pre>
+<p class="has-line-data" data-line-start="112" data-line-end="113">now we reboot into a login screen</p>
+<pre><code class="has-line-data" data-line-start="114" data-line-end="116">reboot
+</code></pre>
+<p class="has-line-data" data-line-start="117" data-line-end="118">I loaded into sddm and logged into my user, bringing me to a fully functioning desktop enviornment</p>
+<p class="has-line-data" data-line-start="119" data-line-end="120">I created a user for codi and set its password, then I expired the password to force the user to change their password as soon as they log in.</p>
+<pre><code class="has-line-data" data-line-start="121" data-line-end="125">useradd codi
+passwd codi
+passwd -e codi
+</code></pre>
+<p class="has-line-data" data-line-start="126" data-line-end="127">now, I could setup a wheel group and set things to make my users sudoers that way, but I got lazy and just edited the /etc/sudoers file, I know its not reccomended but this is my vm and the users are both now sudoers</p>
+<p class="has-line-data" data-line-start="128" data-line-end="129">then I installed zsh</p>
+<pre><code class="has-line-data" data-line-start="130" data-line-end="132">sudo pacman -S zsh
+</code></pre>
+<p class="has-line-data" data-line-start="133" data-line-end="134">now if I run ‘zsh’ in my terminal it will switch from bash to zsh</p>
+<p class="has-line-data" data-line-start="135" data-line-end="136">I installed ssh</p>
+<pre><code class="has-line-data" data-line-start="137" data-line-end="139">sudo pacman -S openssh
+</code></pre>
+<p class="has-line-data" data-line-start="140" data-line-end="141">note:</p>
+<blockquote>
+<p class="has-line-data" data-line-start="141" data-line-end="144">The class gateway is not working<br>
+Update: monday: you said you no longer have a class gateway<br>
+The command ‘systemctl status sshd’ shows that my ssh is active so I think that is enough to prove ssh is on my vm</p>
+</blockquote>
+<p class="has-line-data" data-line-start="146" data-line-end="150">Now I need to add color to the terminal<br>
+I found a tutorial online<br>
+I downloaded this guys files on my vm, then ran ‘nano DIR_COLORS’ to customize the colors to what I wanted.<br>
+then I executed the following commands</p>
+<pre><code class="has-line-data" data-line-start="151" data-line-end="155">sudo mv bash.bashrc /etc/bash.bashrc
+sudo mv DIR_COLORS /etc/
+mv .bashrc ~/.bashrc
+</code></pre>
+<p class="has-line-data" data-line-start="155" data-line-end="156">after I restarted my terminal, the terminal had color</p>
+<p class="has-line-data" data-line-start="157" data-line-end="158">My system already boots up to the GUI DE, I did that while partitioning my drives so that part is done.</p>
+<p class="has-line-data" data-line-start="159" data-line-end="160">Finally I ran the following commands to add a few aliases</p>
+<pre><code class="has-line-data" data-line-start="161" data-line-end="165">alias brc='.bashrc'
+alias BRC='.bashrc'
+alias bashrc='.bashrc'
+</code></pre>
+<p class="has-line-data" data-line-start="166" data-line-end="167">With that done I have a fully working arch linux system setup with all the parameters fufilled.</p>
+<p class="has-line-data" data-line-start="168" data-line-end="169">Now time for the video.</p>
