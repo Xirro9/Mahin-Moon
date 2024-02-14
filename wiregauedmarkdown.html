@@ -1,0 +1,97 @@
+<p class="has-line-data" data-line-start="0" data-line-end="1">First I made a digital ocean account from the link provided and got $200 in credit.</p>
+<p class="has-line-data" data-line-start="2" data-line-end="3">I made an Ubuntu 20.0.4 droplet and gave it a password.</p>
+<p class="has-line-data" data-line-start="4" data-line-end="5">I launched the console for the droplet and installed docker.</p>
+<p class="has-line-data" data-line-start="6" data-line-end="7">To install docker I literally copied and pasted all the commands from the provided guide: <a href="https://thematrix.dev/install-docker-and-docker-compose-on-ubuntu-20-04/">https://thematrix.dev/install-docker-and-docker-compose-on-ubuntu-20-04/</a></p>
+<p class="has-line-data" data-line-start="8" data-line-end="9">for simplicity I will just list all the commands I used:</p>
+<blockquote>
+<p class="has-line-data" data-line-start="10" data-line-end="11">sudo apt install apt-transport-https ca-certificates curl software-properties-common -y</p>
+</blockquote>
+<blockquote>
+<p class="has-line-data" data-line-start="12" data-line-end="13">curl -fsSL <a href="https://download.docker.com/linux/ubuntu/gpg">https://download.docker.com/linux/ubuntu/gpg</a> | sudo apt-key add -</p>
+</blockquote>
+<blockquote>
+<p class="has-line-data" data-line-start="14" data-line-end="18">sudo add-apt-repository <br>
+“deb [arch=amd64] <a href="https://download.docker.com/linux/ubuntu">https://download.docker.com/linux/ubuntu</a> <br>
+$(lsb_release -cs) <br>
+stable”</p>
+</blockquote>
+<blockquote>
+<p class="has-line-data" data-line-start="19" data-line-end="20">apt-cache policy docker-ce</p>
+</blockquote>
+<blockquote>
+<p class="has-line-data" data-line-start="21" data-line-end="22">sudo apt install docker-ce -y</p>
+</blockquote>
+<blockquote>
+<p class="has-line-data" data-line-start="23" data-line-end="24">sudo curl -L &quot;<a href="https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$">https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$</a>(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</p>
+</blockquote>
+<blockquote>
+<p class="has-line-data" data-line-start="25" data-line-end="26">sudo chmod +x /usr/local/bin/docker-compose</p>
+</blockquote>
+<p class="has-line-data" data-line-start="27" data-line-end="28">that is docker installed</p>
+<p class="has-line-data" data-line-start="29" data-line-end="30">Now to install wireguard</p>
+<blockquote>
+<p class="has-line-data" data-line-start="31" data-line-end="34">mkdir -p ~/wireguard/<br>
+mkdir -p ~/wireguard/config/<br>
+nano ~/wireguard/docker-compose.yml</p>
+</blockquote>
+<p class="has-line-data" data-line-start="35" data-line-end="36">inside of the yml I pasted this:</p>
+<blockquote>
+<p class="has-line-data" data-line-start="36" data-line-end="65">version: ‘3.8’<br>
+services:<br>
+wireguard:<br>
+container_name: wireguard<br>
+image: linuxserver/wireguard<br>
+environment:<br>
+- PUID=1000<br>
+- PGID=1000<br>
+- TZ=Asia/Hong_Kong<br>
+- SERVERURL=1.2.3.4<br>
+- SERVERPORT=51820<br>
+- PEERS=pc1,pc2,phone1<br>
+- PEERDNS=auto<br>
+- INTERNAL_SUBNET=10.0.0.0<br>
+ports:<br>
+- 51820:51820/udp<br>
+volumes:<br>
+- type: bind<br>
+source: ./config/<br>
+target: /config/<br>
+- type: bind<br>
+source: /lib/modules<br>
+target: /lib/modules<br>
+restart: always<br>
+cap_add:<br>
+- NET_ADMIN<br>
+- SYS_MODULE<br>
+sysctls:<br>
+- net.ipv4.conf.all.src_valid_mark=1</p>
+</blockquote>
+<p class="has-line-data" data-line-start="66" data-line-end="68">For this to work I had to chang the TZ(time zone) to my current time zone.<br>
+and I had to change SERVERURL to my droplets ipv4 address.</p>
+<p class="has-line-data" data-line-start="69" data-line-end="70">then I ran:</p>
+<blockquote>
+<p class="has-line-data" data-line-start="70" data-line-end="72">cd ~/wireguard/<br>
+docker-compose up -d</p>
+</blockquote>
+<p class="has-line-data" data-line-start="73" data-line-end="74">this installed wireguard, now to get the config files to my pc and phone</p>
+<p class="has-line-data" data-line-start="75" data-line-end="76">I installed the apps on my phone and PC, I ran:</p>
+<blockquote>
+<p class="has-line-data" data-line-start="76" data-line-end="77">docker-compose logs -f wireguard</p>
+</blockquote>
+<p class="has-line-data" data-line-start="78" data-line-end="79">and got a qr code for my phone</p>
+<p class="has-line-data" data-line-start="80" data-line-end="81">I made a new tunnel, naming it lab3, on my phone and went to <a href="http://ipleak.net">ipleak.net</a></p>
+<p class="has-line-data" data-line-start="82" data-line-end="83">I took a screenshot before turning it on, saying I was in oklahoma, then after I turtned it on, it said I was in New Jersy.</p>
+<p class="has-line-data" data-line-start="84" data-line-end="85">I then had to figure out how to get the conf file from the droplet vm to my machine so the desktop app could work</p>
+<blockquote>
+<p class="has-line-data" data-line-start="86" data-line-end="88">cd config<br>
+cd peer_PC1</p>
+</blockquote>
+<p class="has-line-data" data-line-start="89" data-line-end="90">this led me to the peer 1 config file, I nanoed in</p>
+<blockquote>
+<p class="has-line-data" data-line-start="91" data-line-end="92">nano peer_PC1</p>
+</blockquote>
+<p class="has-line-data" data-line-start="93" data-line-end="95">giving me the config file<br>
+I copied the file contents into a text document on my pc and named the text file peer_PC1.conf</p>
+<p class="has-line-data" data-line-start="96" data-line-end="97">I selected that file in the wireguard app and it allowed me to activate the vpn.</p>
+<p class="has-line-data" data-line-start="98" data-line-end="99">I then took a screenshot of <a href="http://ipleak.net">ipleak.net</a> before and after turning on wireguard.</p>
+<p class="has-line-data" data-line-start="100" data-line-end="101">This concludes the wireguard project for SysAdmin.</p>

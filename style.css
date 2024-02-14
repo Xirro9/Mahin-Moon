@@ -80,3 +80,11 @@
     text-align: center;
     color: white;
 }
+.pics{
+    width: 50%;
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    text-align: center;
+    color: white;
+}
