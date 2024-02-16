@@ -43,4 +43,4 @@ while stop != 's':
     else:
         print('your input was invalid')
     stop = input("type: 's' to stop the game, press enter to continue\n")
-    input('Press ENTER to exit')
+   
