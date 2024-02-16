@@ -91,9 +91,9 @@
 .side-text{
     text-align: center;
     color: white;
-    transform: translateY(20%);
-    transform: translateX(60%);
-    width:  10%;
-    position: relative;
+    transform: translateY(-10px);
+    transform: translateX(360%);
+    width:  20%;
+    position: auto;
     
 }
