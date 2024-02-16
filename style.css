@@ -88,3 +88,12 @@
     text-align: center;
     color: white;
 }
+.side-text{
+    text-align: right;
+    color: white;
+    transform: translateY(-50%);
+    transform: translateX(60%);
+    width: 50%;
+    position: absolute;
+    top:50%;
+}
